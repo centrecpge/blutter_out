@@ -1,76 +1,338 @@
-// lib: , url: package:cmim/Pages/Demandes/SmartRmb/AutreStep.dart
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../../Controllers/RmbController.dart';
+import '../../../../Data/Generator.dart';
+import 'LastStep.dart';
 
-// class id: 1048656, size: 0x8
-class :: {
-}
-
-// class id: 3294, size: 0x2c, field offset: 0x14
-class _AutreStepState extends State<dynamic> {
-
-  late String rmbTypeString; // offset: 0x24
-  late final Future<dynamic> myFuture; // offset: 0x1c
-
-  _ initState(/* No info */) {
-  }
-  _ getStorage(/* No info */) async {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  _ build(/* No info */) {
-  }
-  [closure] Widget <anonymous closure>(dynamic, BuildContext, AsyncSnapshot<dynamic>) {
-  }
-  _ _finishBtn(/* No info */) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  _ finishSteps(/* No info */) {
-  }
-  _ _picsPlaceHolder(/* No info */) {
-  }
-  [closure] Widget <anonymous closure>(dynamic, RmbController) {
-  }
-  [closure] Widget <anonymous closure>(dynamic, BuildContext, int) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  [closure] FractionallySizedBox <anonymous closure>(dynamic, BuildContext) {
-  }
-  _ _leModal(/* No info */) {
-  }
-  [closure] Theme <anonymous closure>(dynamic, BuildContext, (dynamic, (dynamic) => void) => void) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  [closure] Future<void> <anonymous closure>(dynamic) async {
-  }
-  [closure] Null <anonymous closure>(dynamic) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  [closure] FractionallySizedBox <anonymous closure>(dynamic, BuildContext) {
-  }
-  [closure] void <anonymous closure>(dynamic) {
-  }
-  _ _steps(/* No info */) {
-  }
-  String txtPercentSwitch(_AutreStepState) {
-  }
-  _ percentSwitch(/* No info */) {
-  }
-  _ txtSwitcher(/* No info */) {
-  }
-  String stringInfo(_AutreStepState) {
-  }
-}
-
-// class id: 3870, size: 0xc, field offset: 0xc
-//   const constructor, 
 class AutreStep extends StatefulWidget {
+  const AutreStep({super.key});
 
-  _ createState(/* No info */) {
-  }
+  @override
+  State<AutreStep> createState() => _AutreStepState();
 }
 
+class _AutreStepState extends State<AutreStep> {
+  late String rmbTypeString;
+  late final Future<dynamic> myFuture;
+  
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
+  final RmbController rmbController = Get.put(RmbController());
+  final ImagePicker _imagePicker = ImagePicker();
+  
+  List<XFile> selectedImages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    myFuture = _initData();
+  }
+
+  Future<void> _initData() async {
+    await getStorage();
+    await Generator.updateLoginTime();
+  }
+
+  Future<void> getStorage() async {
+    rmbTypeString = "Autre demande";
+    setState(() {});
+  }
+
+  Future<void> _pickImages() async {
+    try {
+      final List<XFile> images = await _imagePicker.pickMultiImage();
+      if (images.isNotEmpty) {
+        setState(() {
+          selectedImages.addAll(images);
+        });
+      }
+    } catch (e) {
+      Generator.smartSnackBar("Erreur lors de la sélection", Colors.red);
+    }
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      selectedImages.removeAt(index);
+    });
+  }
+
+  void _nextStep() {
+    if (selectedImages.isEmpty) {
+      Generator.smartSnackBar("Veuillez sélectionner au moins une image", Colors.orange);
+      return;
+    }
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LastStep(),
+      ),
+    );
+  }
+
+  void finishSteps() {
+    _nextStep();
+  }
+
+  String percentSwitch() {
+    if (selectedImages.isEmpty) return "0%";
+    return "${((selectedImages.length / 5) * 100).toStringAsFixed(0)}%";
+  }
+
+  String txtPercentSwitch() {
+    if (selectedImages.isEmpty) return "Aucun document";
+    return "${selectedImages.length} document(s) jointe(s)";
+  }
+
+  String stringInfo() {
+    return "Veuillez joindre tous les documents nécessaires pour votre demande.";
+  }
+
+  Widget txtSwitcher() {
+    return Text(
+      stringInfo(),
+      style: GoogleFonts.montserrat(fontSize: 12, color: Colors.grey[700]),
+    );
+  }
+
+  Widget _picsPlaceHolder() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.image, size: 60, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text(
+            "Pas de documents sélectionnés",
+            style: GoogleFonts.montserrat(color: Colors.grey, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _leModal(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.transparent,
+        ),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.photo_camera),
+            title: Text(
+              "Prendre une photo",
+              style: GoogleFonts.montserrat(),
+            ),
+            onTap: () async {
+              Navigator.pop(context);
+              final XFile? image = await _imagePicker.pickImage(
+                source: ImageSource.camera,
+              );
+              if (image != null) {
+                setState(() {
+                  selectedImages.add(image);
+                });
+              }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.photo_library),
+            title: Text(
+              "Galerie",
+              style: GoogleFonts.montserrat(),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              _pickImages();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _steps() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Étape 1",
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Documents",
+            style: GoogleFonts.montserrat(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          rmbTypeString,
+          style: GoogleFonts.montserrat(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Color(0xFF004A99)),
+      ),
+      body: FutureBuilder(
+        future: myFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _steps(),
+                const SizedBox(height: 30),
+                
+                Text(
+                  "Documents à joindre",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                
+                Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey[300]!),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: selectedImages.isEmpty
+                      ? _picsPlaceHolder()
+                      : GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          itemCount: selectedImages.length,
+                          itemBuilder: (context, index) {
+                            return Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: FileImage(
+                                        File(selectedImages[index].path),
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: GestureDetector(
+                                    onTap: () => _removeImage(index),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 20),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => _leModal(context),
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                    label: Text(
+                      "Ajouter des documents",
+                      style: GoogleFonts.montserrat(fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF004A99),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _nextStep,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF004A99),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      "Continuer",
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
