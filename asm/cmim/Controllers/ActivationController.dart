@@ -77,14 +77,14 @@ class ActivationController extends GetxController {
           isCheckStateRunning = false;
           smartSnackBar(
             "Un problème est survenu lors du traitement de votre demande",
-            icon: Icons.error, // 0xffc13335
+            icon: Icons.error,
           );
           debugPrint("CODE 404 KEY IS MISSING");
         } else if (code == "201") {
           isCheckStateRunning = false;
           smartSnackBar(
             "Compte déja activé",
-            icon: Icons.check_circle, // 0xfff68a1c (IconDataSolid)
+            icon: Icons.check_circle,
           );
           debugPrint("CODE 201 Compte déja activé");
         } else if (code == "500") {
@@ -188,7 +188,7 @@ class ActivationController extends GetxController {
 
       final decodedResponse = jsonDecode(response.body);
       matricule = id.toString();
-      Generator.myMd5Hash = id.toString(); // Wait, ASM shows StoreStaticField(0xce4, r0) where r0 was id
+      Generator.myMd5Hash = id.toString();
 
       if (response.statusCode == 200) {
         isValidated = false;
