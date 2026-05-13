@@ -1,13 +1,28 @@
-// lib: , url: package:cmim/Data/Guide.dart
+class GuideVideo {
+  final String title;
+  final String reference;
 
-// class id: 1048642, size: 0x8
-class :: {
+  GuideVideo({required this.title, required this.reference});
+
+  factory GuideVideo.fromJson(Map<String, dynamic> json) {
+    return GuideVideo(
+      title: json['title'] ?? '',
+      reference: json['reference_de_video'] ?? '',
+    );
+  }
 }
 
-// class id: 4036, size: 0x10, field offset: 0x8
-class GuideVideo extends Object {
+class GuidePdf {
+  final String title;
+  final String link;
+
+  GuidePdf({required this.title, required this.link});
+
+  factory GuidePdf.fromJson(Map<String, dynamic> json) {
+    return GuidePdf(
+      title: json['title'] ?? '',
+      link: json['link_pdf'] ?? '',
+    );
+  }
 }
 
-// class id: 4037, size: 0x10, field offset: 0x8
-class GuidePdf extends Object {
-}
