@@ -287,3 +287,4 @@ class ActivationController extends GetxController {
     });
   }
 }
+

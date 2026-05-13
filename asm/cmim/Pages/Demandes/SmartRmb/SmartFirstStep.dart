@@ -276,3 +276,4 @@ class _SmartFirstStepState extends State<SmartFirstStep> {
     );
   }
 }
+

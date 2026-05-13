@@ -299,3 +299,4 @@ class _MaladieState extends State<Maladie> {
     );
   }
 }
+

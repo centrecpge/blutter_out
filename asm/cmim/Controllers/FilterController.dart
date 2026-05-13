@@ -40,3 +40,4 @@ class FilterController extends GetxController {
     return null;
   }
 }
+

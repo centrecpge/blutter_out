@@ -230,3 +230,4 @@ class RmbController extends GetxController {
     return xml;
   }
 }
+
