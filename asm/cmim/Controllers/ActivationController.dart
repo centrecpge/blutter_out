@@ -30,7 +30,6 @@ class ActivationController extends GetxController {
   }
 
   Future<void> checkState() async {
-    // 0x7cf404
     FocusManager.instance.primaryFocus?.unfocus();
     
     if (formKey.currentState?.validate() ?? false) {
@@ -45,7 +44,6 @@ class ActivationController extends GetxController {
   }
 
   Future<void> checkMatricule(dynamic id) async {
-    // 0x7cf6b8
     debugPrint("checkMatricule id  : $id ");
     isCheckStateRunning = false;
 
@@ -137,7 +135,6 @@ class ActivationController extends GetxController {
   }
 
   void goToVerificationPage() {
-    // 0x7d0270
     if (!isCheckStateRunning) {
       Get.off(
         () => Verification(),
@@ -149,7 +146,6 @@ class ActivationController extends GetxController {
   }
 
   Future<void> pswCheckState() async {
-    // 0x7d0ec4
     FocusManager.instance.primaryFocus?.unfocus();
     
     final isValid = formKey.currentState?.validate() ?? false;
@@ -167,7 +163,6 @@ class ActivationController extends GetxController {
   }
 
   Future<void> pswCheckMatricule(dynamic id) async {
-    // 0x7d1084
     debugPrint("Get_user_matricule start : $id ");
     isPswCheckStateRunning = false;
 
@@ -253,7 +248,6 @@ class ActivationController extends GetxController {
   }
 
   void goToPswVerificationPage() {
-    // 0x7d1994
     if (!isPswCheckStateRunning) {
       Get.off(
         () => PswSecondStep(),
@@ -265,7 +259,6 @@ class ActivationController extends GetxController {
   }
 
   String? activationValidateIfEmpty(String? value) {
-    // 0x7d2190
     if (value == null || value == "") {
       return "Veuillez remplir le champ";
     }
@@ -274,13 +267,11 @@ class ActivationController extends GetxController {
   }
 
   Future<void> pswCheckStateResend(dynamic id) async {
-    // 0x7d93b0
     debugPrint("pswCheckStateResend start");
     await pswCheckMatricule(id);
   }
 
   void pswChangeFromSettings(dynamic id) {
-    // 0x85e9b4
     debugPrint("psw changefrom settings $id");
     pswCheckMatricule(id).then((_) {
       goToPswVerificationPage();
