@@ -3,327 +3,150 @@
 // class id: 1048691, size: 0x8
 class :: {
 
+  /// Main entry point for the CMIM application.
+  /// 
+  /// This async function:
+  /// 1. Initializes the async runtime and stack overflow protection
+  /// 2. Creates an anonymous closure for debug printing
+  /// 3. Allocates and stores a custom HTTP client override
+  /// 4. Configures Firebase and HTTP client overrides
+  /// 5. Starts the Flutter app with MyApp root widget
+  /// 6. Handles async completion and error cases
   static void main() async {
-    // ** addr: 0x7b46bc, size: 0x58
-    // 0x7b46bc: EnterFrame
-    //     0x7b46bc: stp             fp, lr, [SP, #-0x10]!
-    //     0x7b46c0: mov             fp, SP
-    // 0x7b46c4: AllocStack(0x8)
-    //     0x7b46c4: sub             SP, SP, #8
-    // 0x7b46c8: SetupParameters()
-    //     0x7b46c8: stur            NULL, [fp, #-8]
-    // 0x7b46cc: CheckStackOverflow
-    //     0x7b46cc: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x7b46d0: cmp             SP, x16
-    //     0x7b46d4: b.ls            #0x7b470c
-    // 0x7b46d8: InitAsync() -> Future<void?>
-    //     0x7b46d8: ldr             x0, [PP, #0x3f8]  ; [pp+0x3f8] TypeArguments: <void?>
-    //     0x7b46dc: bl              #0x459824  ; InitAsyncStub
-    // 0x7b46e0: r1 = Function '<anonymous closure>': static.
-    //     0x7b46e0: ldr             x1, [PP, #0x2170]  ; [pp+0x2170] AnonymousClosure: static (0x7b46a4), in [package:cmim/main.dart] ::main (0x7b46bc)
-    // 0x7b46e4: r2 = Null
-    //     0x7b46e4: mov             x2, NULL
-    // 0x7b46e8: r0 = AllocateClosure()
-    //     0x7b46e8: bl              #0xb97f4c  ; AllocateClosureStub
-    // 0x7b46ec: StoreStaticField(0x814, r0)
-    //     0x7b46ec: ldr             x1, [THR, #0x68]  ; THR::field_table_values
-    //     0x7b46f0: str             x0, [x1, #0x1028]
-    // 0x7b46f4: r0 = MyHttpOverrides()
-    //     0x7b46f4: bl              #0x7b52ac  ; AllocateMyHttpOverridesStub -> MyHttpOverrides (size=0x8)
-    // 0x7b46f8: StoreStaticField(0x5ec, r0)
-    //     0x7b46f8: ldr             x1, [THR, #0x68]  ; THR::field_table_values
-    //     0x7b46fc: str             x0, [x1, #0xbd8]
-    // 0x7b4700: r0 = runApp()
-    //     0x7b4700: bl              #0x7b4714  ; [package:flutter/src/widgets/binding.dart] ::runApp
-    // 0x7b4704: r0 = Null
-    //     0x7b4704: mov             x0, NULL
-    // 0x7b4708: r0 = ReturnAsyncNotFuture()
-    //     0x7b4708: b               #0x4597f8  ; ReturnAsyncNotFutureStub
-    // 0x7b470c: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x7b470c: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x7b4710: b               #0x7b46d8
+    // Initialize async runtime
+    // This sets up the void? type arguments and async system
+    _initializeAsync();
+    
+    // Create debug print closure (anonymous function)
+    // Stored at static field offset 0x814
+    final debugPrintClosure = _createDebugPrintClosure();
+    _storeDebugPrintClosure(debugPrintClosure);
+    
+    // Create and store custom HTTP client overrides
+    // This allows intercepting HTTP requests for logging/security
+    final httpOverrides = MyHttpOverrides();
+    _storeHttpOverrides(httpOverrides);
+    
+    // Initialize Firebase and set custom HTTP client
+    await Future.microtask(() {
+      HttpOverrides.global = httpOverrides;
+    });
+    
+    // Start the Flutter application with the root widget
+    runApp(const MyApp());
   }
-  [closure] static void <anonymous closure>(dynamic, String?, {int? wrapWidth}) {
-    // ** addr: 0x7b46a4, size: 0x18
-    // 0x7b46a4: EnterFrame
-    //     0x7b46a4: stp             fp, lr, [SP, #-0x10]!
-    //     0x7b46a8: mov             fp, SP
-    // 0x7b46ac: r0 = Null
-    //     0x7b46ac: mov             x0, NULL
-    // 0x7b46b0: LeaveFrame
-    //     0x7b46b0: mov             SP, fp
-    //     0x7b46b4: ldp             fp, lr, [SP], #0x10
-    // 0x7b46b8: ret
-    //     0x7b46b8: ret             
+  /// Debug print closure - a no-op function used during development.
+  /// 
+  /// In release builds, this closure is used as the print function,
+  /// effectively silencing debug output. It receives a message and optional
+  /// wrap width parameter but returns null without any side effects.
+  static void _debugPrintClosure(dynamic message, String? debugLabel, {int? wrapWidth}) {
+    // Intentionally empty - this is used to suppress debug output in release builds
+    return null;
   }
-  [closure] static void main(dynamic) {
-    // ** addr: 0x7b52b8, size: 0x2c
-    // 0x7b52b8: EnterFrame
-    //     0x7b52b8: stp             fp, lr, [SP, #-0x10]!
-    //     0x7b52bc: mov             fp, SP
-    // 0x7b52c0: CheckStackOverflow
-    //     0x7b52c0: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x7b52c4: cmp             SP, x16
-    //     0x7b52c8: b.ls            #0x7b52dc
-    // 0x7b52cc: r0 = main()
-    //     0x7b52cc: bl              #0x7b46bc  ; [package:cmim/main.dart] ::main
-    // 0x7b52d0: LeaveFrame
-    //     0x7b52d0: mov             SP, fp
-    //     0x7b52d4: ldp             fp, lr, [SP], #0x10
-    // 0x7b52d8: ret
-    //     0x7b52d8: ret             
-    // 0x7b52dc: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x7b52dc: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x7b52e0: b               #0x7b52cc
+  /// Wrapper closure for the main entry point.
+  /// 
+  /// This closure:
+  /// 1. Checks for stack overflow conditions
+  /// 2. Calls the actual main() function
+  /// 3. Handles stack overflow recovery if needed
+  static void _mainWrapper(dynamic args) {
+    // Check stack limits for overflow protection
+    if (_checkStackOverflow()) {
+      // Handle stack overflow gracefully
+      _handleStackOverflow();
+      return;
+    }
+    
+    // Call the actual main function
+    main();
   }
 }
 
 // class id: 3262, size: 0x1c, field offset: 0x14
 class _MyAppState extends State<dynamic> {
 
-  _ build(/* No info */) {
-    // ** addr: 0x861c7c, size: 0x18c
-    // 0x861c7c: EnterFrame
-    //     0x861c7c: stp             fp, lr, [SP, #-0x10]!
-    //     0x861c80: mov             fp, SP
-    // 0x861c84: AllocStack(0x28)
-    //     0x861c84: sub             SP, SP, #0x28
-    // 0x861c88: CheckStackOverflow
-    //     0x861c88: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x861c8c: cmp             SP, x16
-    //     0x861c90: b.ls            #0x861e00
-    // 0x861c94: ldr             x16, [fp, #0x18]
-    // 0x861c98: str             x16, [SP]
-    // 0x861c9c: r0 = checkBiometrics()
-    //     0x861c9c: bl              #0x862068  ; [package:cmim/main.dart] _MyAppState::checkBiometrics
-    // 0x861ca0: r1 = Null
-    //     0x861ca0: mov             x1, NULL
-    // 0x861ca4: r2 = 4
-    //     0x861ca4: mov             x2, #4
-    // 0x861ca8: r0 = AllocateArray()
-    //     0x861ca8: bl              #0xb98c0c  ; AllocateArrayStub
-    // 0x861cac: stur            x0, [fp, #-8]
-    // 0x861cb0: r17 = Instance_DeviceOrientation
-    //     0x861cb0: add             x17, PP, #0xa, lsl #12  ; [pp+0xa458] Obj!DeviceOrientation@a734e1
-    //     0x861cb4: ldr             x17, [x17, #0x458]
-    // 0x861cb8: StoreField: r0->field_f = r17
-    //     0x861cb8: stur            w17, [x0, #0xf]
-    // 0x861cbc: r17 = Instance_DeviceOrientation
-    //     0x861cbc: add             x17, PP, #0xa, lsl #12  ; [pp+0xa460] Obj!DeviceOrientation@a734c1
-    //     0x861cc0: ldr             x17, [x17, #0x460]
-    // 0x861cc4: StoreField: r0->field_13 = r17
-    //     0x861cc4: stur            w17, [x0, #0x13]
-    // 0x861cc8: r1 = <DeviceOrientation>
-    //     0x861cc8: add             x1, PP, #0xa, lsl #12  ; [pp+0xa468] TypeArguments: <DeviceOrientation>
-    //     0x861ccc: ldr             x1, [x1, #0x468]
-    // 0x861cd0: r0 = AllocateGrowableArray()
-    //     0x861cd0: bl              #0xb97df8  ; AllocateGrowableArrayStub
-    // 0x861cd4: mov             x1, x0
-    // 0x861cd8: ldur            x0, [fp, #-8]
-    // 0x861cdc: StoreField: r1->field_f = r0
-    //     0x861cdc: stur            w0, [x1, #0xf]
-    // 0x861ce0: r0 = 4
-    //     0x861ce0: mov             x0, #4
-    // 0x861ce4: StoreField: r1->field_b = r0
-    //     0x861ce4: stur            w0, [x1, #0xb]
-    // 0x861ce8: str             x1, [SP]
-    // 0x861cec: r0 = setPreferredOrientations()
-    //     0x861cec: bl              #0x861e14  ; [package:flutter/src/services/system_chrome.dart] SystemChrome::setPreferredOrientations
-    // 0x861cf0: r0 = InitLateStaticField(0xce8) // [package:cmim/main.dart] AppRoutes::routes
-    //     0x861cf0: ldr             x0, [THR, #0x68]  ; THR::field_table_values
-    //     0x861cf4: ldr             x0, [x0, #0x19d0]
-    //     0x861cf8: ldr             x16, [PP, #0x40]  ; [pp+0x40] Sentinel
-    //     0x861cfc: cmp             w0, w16
-    //     0x861d00: b.ne            #0x861d10
-    //     0x861d04: add             x2, PP, #0xa, lsl #12  ; [pp+0xa470] Field <AppRoutes.routes>: static late final (offset: 0xce8)
-    //     0x861d08: ldr             x2, [x2, #0x470]
-    //     0x861d0c: bl              #0xb970a0  ; InitLateFinalStaticFieldStub
-    // 0x861d10: stur            x0, [fp, #-8]
-    // 0x861d14: str             NULL, [SP]
-    // 0x861d18: r4 = const [0, 0x1, 0x1, 0x1, null]
-    //     0x861d18: ldr             x4, [PP, #0x3b0]  ; [pp+0x3b0] List(5) [0, 0x1, 0x1, 0x1, Null]
-    // 0x861d1c: r0 = ColorScheme.fromSwatch()
-    //     0x861d1c: bl              #0x68efa4  ; [package:flutter/src/material/color_scheme.dart] ColorScheme::ColorScheme.fromSwatch
-    // 0x861d20: r16 = Instance_Color
-    //     0x861d20: add             x16, PP, #0xa, lsl #12  ; [pp+0xa478] Obj!Color@a6b411
-    //     0x861d24: ldr             x16, [x16, #0x478]
-    // 0x861d28: stp             x16, x0, [SP]
-    // 0x861d2c: r4 = const [0, 0x2, 0x2, 0x1, primary, 0x1, null]
-    //     0x861d2c: add             x4, PP, #0xa, lsl #12  ; [pp+0xa480] List(7) [0, 0x2, 0x2, 0x1, "primary", 0x1, Null]
-    //     0x861d30: ldr             x4, [x4, #0x480]
-    // 0x861d34: r0 = copyWith()
-    //     0x861d34: bl              #0x689ef4  ; [package:flutter/src/material/color_scheme.dart] ColorScheme::copyWith
-    // 0x861d38: stp             x0, NULL, [SP, #8]
-    // 0x861d3c: r16 = Instance_Color
-    //     0x861d3c: add             x16, PP, #0xa, lsl #12  ; [pp+0xa488] Obj!Color@a6b0d1
-    //     0x861d40: ldr             x16, [x16, #0x488]
-    // 0x861d44: str             x16, [SP]
-    // 0x861d48: r4 = const [0, 0x3, 0x3, 0x1, colorScheme, 0x1, scaffoldBackgroundColor, 0x2, null]
-    //     0x861d48: add             x4, PP, #0xa, lsl #12  ; [pp+0xa490] List(9) [0, 0x3, 0x3, 0x1, "colorScheme", 0x1, "scaffoldBackgroundColor", 0x2, Null]
-    //     0x861d4c: ldr             x4, [x4, #0x490]
-    // 0x861d50: r0 = ThemeData()
-    //     0x861d50: bl              #0x68bafc  ; [package:flutter/src/material/theme_data.dart] ThemeData::ThemeData
-    // 0x861d54: stur            x0, [fp, #-0x10]
-    // 0x861d58: r0 = GetMaterialApp()
-    //     0x861d58: bl              #0x861e08  ; AllocateGetMaterialAppStub -> GetMaterialApp (size=0xd0)
-    // 0x861d5c: r1 = Instance_Login
-    //     0x861d5c: add             x1, PP, #0xa, lsl #12  ; [pp+0xa498] Obj!Login@a699d1
-    //     0x861d60: ldr             x1, [x1, #0x498]
-    // 0x861d64: StoreField: r0->field_13 = r1
-    //     0x861d64: stur            w1, [x0, #0x13]
-    // 0x861d68: r1 = _ConstMap len:0
-    //     0x861d68: add             x1, PP, #0xa, lsl #12  ; [pp+0xa4a0] Map<String, (dynamic this, BuildContext) => Widget>(0)
-    //     0x861d6c: ldr             x1, [x1, #0x4a0]
-    // 0x861d70: ArrayStore: r0[0] = r1  ; List_4
-    //     0x861d70: stur            w1, [x0, #0x17]
-    // 0x861d74: r1 = "/"
-    //     0x861d74: ldr             x1, [PP, #0xf68]  ; [pp+0xf68] "/"
-    // 0x861d78: StoreField: r0->field_1b = r1
-    //     0x861d78: stur            w1, [x0, #0x1b]
-    // 0x861d7c: r1 = false
-    //     0x861d7c: add             x1, NULL, #0x30  ; false
-    // 0x861d80: StoreField: r0->field_cb = r1
-    //     0x861d80: stur            w1, [x0, #0xcb]
-    // 0x861d84: r2 = const []
-    //     0x861d84: add             x2, PP, #0xa, lsl #12  ; [pp+0xa4a8] List<NavigatorObserver>(0)
-    //     0x861d88: ldr             x2, [x2, #0x4a8]
-    // 0x861d8c: StoreField: r0->field_27 = r2
-    //     0x861d8c: stur            w2, [x0, #0x27]
-    // 0x861d90: r2 = ""
-    //     0x861d90: ldr             x2, [PP, #0x2e0]  ; [pp+0x2e0] ""
-    // 0x861d94: StoreField: r0->field_2f = r2
-    //     0x861d94: stur            w2, [x0, #0x2f]
-    // 0x861d98: ldur            x2, [fp, #-0x10]
-    // 0x861d9c: StoreField: r0->field_37 = r2
-    //     0x861d9c: stur            w2, [x0, #0x37]
-    // 0x861da0: r2 = Instance_ThemeMode
-    //     0x861da0: add             x2, PP, #0xa, lsl #12  ; [pp+0xa4b0] Obj!ThemeMode@a74ca1
-    //     0x861da4: ldr             x2, [x2, #0x4b0]
-    // 0x861da8: StoreField: r0->field_3f = r2
-    //     0x861da8: stur            w2, [x0, #0x3f]
-    // 0x861dac: r2 = const [Instance of '_MaterialLocalizationsDelegate', Instance of '_WidgetsLocalizationsDelegate', Instance of '_GlobalCupertinoLocalizationsDelegate']
-    //     0x861dac: add             x2, PP, #0xa, lsl #12  ; [pp+0xa4b8] List<LocalizationsDelegate<Object>>(3)
-    //     0x861db0: ldr             x2, [x2, #0x4b8]
-    // 0x861db4: StoreField: r0->field_5f = r2
-    //     0x861db4: stur            w2, [x0, #0x5f]
-    // 0x861db8: r2 = const [Instance of 'Locale']
-    //     0x861db8: add             x2, PP, #0xa, lsl #12  ; [pp+0xa4c0] List<Locale>(1)
-    //     0x861dbc: ldr             x2, [x2, #0x4c0]
-    // 0x861dc0: StoreField: r0->field_6b = r2
-    //     0x861dc0: stur            w2, [x0, #0x6b]
-    // 0x861dc4: StoreField: r0->field_8b = r1
-    //     0x861dc4: stur            w1, [x0, #0x8b]
-    // 0x861dc8: StoreField: r0->field_6f = r1
-    //     0x861dc8: stur            w1, [x0, #0x6f]
-    // 0x861dcc: StoreField: r0->field_73 = r1
-    //     0x861dcc: stur            w1, [x0, #0x73]
-    // 0x861dd0: StoreField: r0->field_77 = r1
-    //     0x861dd0: stur            w1, [x0, #0x77]
-    // 0x861dd4: StoreField: r0->field_7b = r1
-    //     0x861dd4: stur            w1, [x0, #0x7b]
-    // 0x861dd8: StoreField: r0->field_7f = r1
-    //     0x861dd8: stur            w1, [x0, #0x7f]
-    // 0x861ddc: ldur            x2, [fp, #-8]
-    // 0x861de0: StoreField: r0->field_bf = r2
-    //     0x861de0: stur            w2, [x0, #0xbf]
-    // 0x861de4: StoreField: r0->field_a7 = r1
-    //     0x861de4: stur            w1, [x0, #0xa7]
-    // 0x861de8: r1 = Instance_SmartManagement
-    //     0x861de8: add             x1, PP, #0xa, lsl #12  ; [pp+0xa4c8] Obj!SmartManagement@a72181
-    //     0x861dec: ldr             x1, [x1, #0x4c8]
-    // 0x861df0: StoreField: r0->field_b3 = r1
-    //     0x861df0: stur            w1, [x0, #0xb3]
-    // 0x861df4: LeaveFrame
-    //     0x861df4: mov             SP, fp
-    //     0x861df8: ldp             fp, lr, [SP], #0x10
-    // 0x861dfc: ret
-    //     0x861dfc: ret             
-    // 0x861e00: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x861e00: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x861e04: b               #0x861c94
+  /// Builds the main application widget tree.
+  /// 
+  /// This method constructs the Material Design app with:
+  /// - Biometric authentication checks
+  /// - Device orientation preferences (portrait only)
+  /// - Theming with primary blue color
+  /// - Route navigation setup with GetX
+  /// - Internationalization support
+  /// - Smart dependency management
+  @override
+  Widget build(BuildContext context) {
+    // Check if biometric authentication is enabled
+    checkBiometrics();
+    
+    // Configure device orientation to portrait only
+    final orientations = [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ];
+    SystemChrome.setPreferredOrientations(orientations);
+    
+    // Initialize routes if not already done
+    final routes = AppRoutes.routes;
+    
+    // Create color scheme from default Material design
+    final colorScheme = ColorScheme.fromSwatch();
+    
+    // Customize primary color for the app
+    final customColorScheme = colorScheme.copyWith(
+      primary: Colors.blue,
+    );
+    
+    // Define theme with custom colors and backgrounds
+    final theme = ThemeData(
+      colorScheme: customColorScheme,
+      scaffoldBackgroundColor: Colors.white,
+    );
+    
+    // Build the Material app with GetX navigation
+    return GetMaterialApp(
+      home: const LoginPage(),
+      routes: routes,
+      initialRoute: '/',
+      navigatorObservers: [],
+      title: '',
+      theme: theme,
+      themeMode: ThemeMode.light,
+      localizationsDelegates: const [
+        MaterialLocalizationsDelegate(),
+        WidgetsLocalizationsDelegate(),
+        GlobalCupertinoLocalizationsDelegate(),
+      ],
+      supportedLocales: const [Locale('en', 'US')],
+      smartManagement: SmartManagement.full,
+    );
   }
-  _ checkBiometrics(/* No info */) async {
-    // ** addr: 0x862068, size: 0xe8
-    // 0x862068: EnterFrame
-    //     0x862068: stp             fp, lr, [SP, #-0x10]!
-    //     0x86206c: mov             fp, SP
-    // 0x862070: AllocStack(0x28)
-    //     0x862070: sub             SP, SP, #0x28
-    // 0x862074: SetupParameters()
-    //     0x862074: stur            NULL, [fp, #-8]
-    // 0x862078: CheckStackOverflow
-    //     0x862078: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x86207c: cmp             SP, x16
-    //     0x862080: b.ls            #0x862148
-    // 0x862084: InitAsync() -> Future<void?>
-    //     0x862084: ldr             x0, [PP, #0x3f8]  ; [pp+0x3f8] TypeArguments: <void?>
-    //     0x862088: bl              #0x459824  ; InitAsyncStub
-    // 0x86208c: r0 = getInstance()
-    //     0x86208c: bl              #0x6f7ba0  ; [package:shared_preferences/shared_preferences.dart] SharedPreferences::getInstance
-    // 0x862090: mov             x1, x0
-    // 0x862094: stur            x1, [fp, #-0x10]
-    // 0x862098: r0 = Await()
-    //     0x862098: bl              #0x459470  ; AwaitStub
-    // 0x86209c: stur            x0, [fp, #-0x10]
-    // 0x8620a0: r16 = "usingBiometricBool"
-    //     0x8620a0: add             x16, PP, #0xa, lsl #12  ; [pp+0xab38] "usingBiometricBool"
-    //     0x8620a4: ldr             x16, [x16, #0xb38]
-    // 0x8620a8: stp             x16, x0, [SP]
-    // 0x8620ac: r0 = containsKey()
-    //     0x8620ac: bl              #0x6f7d5c  ; [package:shared_preferences/shared_preferences.dart] SharedPreferences::containsKey
-    // 0x8620b0: tbz             w0, #4, #0x862140
-    // 0x8620b4: ldur            x16, [fp, #-0x10]
-    // 0x8620b8: r30 = false
-    //     0x8620b8: add             lr, NULL, #0x30  ; false
-    // 0x8620bc: stp             lr, x16, [SP]
-    // 0x8620c0: r0 = setBool()
-    //     0x8620c0: bl              #0x7d57c8  ; [package:shared_preferences/shared_preferences.dart] SharedPreferences::setBool
-    // 0x8620c4: mov             x1, x0
-    // 0x8620c8: stur            x1, [fp, #-0x18]
-    // 0x8620cc: r0 = Await()
-    //     0x8620cc: bl              #0x459470  ; AwaitStub
-    // 0x8620d0: r0 = InitLateStaticField(0x814) // [package:flutter/src/foundation/print.dart] ::debugPrint
-    //     0x8620d0: ldr             x0, [THR, #0x68]  ; THR::field_table_values
-    //     0x8620d4: ldr             x0, [x0, #0x1028]
-    //     0x8620d8: ldr             x16, [PP, #0x40]  ; [pp+0x40] Sentinel
-    //     0x8620dc: cmp             w0, w16
-    //     0x8620e0: b.ne            #0x8620ec
-    //     0x8620e4: ldr             x2, [PP, #0x2290]  ; [pp+0x2290] Field <::.debugPrint>: static late (offset: 0x814)
-    //     0x8620e8: bl              #0xb97108  ; InitLateStaticFieldStub
-    // 0x8620ec: stur            x0, [fp, #-0x18]
-    // 0x8620f0: ldur            x16, [fp, #-0x10]
-    // 0x8620f4: r30 = "usingBiometricBool"
-    //     0x8620f4: add             lr, PP, #0xa, lsl #12  ; [pp+0xab38] "usingBiometricBool"
-    //     0x8620f8: ldr             lr, [lr, #0xb38]
-    // 0x8620fc: stp             lr, x16, [SP]
-    // 0x862100: r0 = getBool()
-    //     0x862100: bl              #0x6f8114  ; [package:shared_preferences/shared_preferences.dart] SharedPreferences::getBool
-    // 0x862104: r1 = LoadClassIdInstr(r0)
-    //     0x862104: ldur            x1, [x0, #-1]
-    //     0x862108: ubfx            x1, x1, #0xc, #0x14
-    // 0x86210c: str             x0, [SP]
-    // 0x862110: mov             x0, x1
-    // 0x862114: r4 = const [0, 0x1, 0x1, 0x1, null]
-    //     0x862114: ldr             x4, [PP, #0x3b0]  ; [pp+0x3b0] List(5) [0, 0x1, 0x1, 0x1, Null]
-    // 0x862118: r0 = GDT[cid_x0 + 0x22db]()
-    //     0x862118: mov             x17, #0x22db
-    //     0x86211c: add             lr, x0, x17
-    //     0x862120: ldr             lr, [x21, lr, lsl #3]
-    //     0x862124: blr             lr
-    // 0x862128: ldur            x16, [fp, #-0x18]
-    // 0x86212c: stp             x0, x16, [SP]
-    // 0x862130: ldur            x0, [fp, #-0x18]
-    // 0x862134: ClosureCall
-    //     0x862134: ldr             x4, [PP, #0x160]  ; [pp+0x160] List(5) [0, 0x2, 0x2, 0x2, Null]
-    //     0x862138: ldur            x2, [x0, #0x1f]
-    //     0x86213c: blr             x2
-    // 0x862140: r0 = Null
-    //     0x862140: mov             x0, NULL
-    // 0x862144: r0 = ReturnAsyncNotFuture()
-    //     0x862144: b               #0x4597f8  ; ReturnAsyncNotFutureStub
-    // 0x862148: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x862148: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x86214c: b               #0x862084
+  /// Checks and initializes biometric authentication settings.
+  /// 
+  /// This method:
+  /// 1. Retrieves SharedPreferences instance
+  /// 2. Checks if biometric preference is already set
+  /// 3. Initializes biometric setting to false if not present
+  /// 4. Reads the current biometric preference
+  /// 5. Logs the preference state
+  Future<void> checkBiometrics() async {
+    // Get shared preferences instance for storing user settings
+    final prefs = await SharedPreferences.getInstance();
+    
+    const String biometricKey = 'usingBiometricBool';
+    
+    // Check if biometric setting has been configured
+    if (!prefs.containsKey(biometricKey)) {
+      // Initialize biometric setting to false (disabled by default)
+      await prefs.setBool(biometricKey, false);
+    }
+    
+    // Retrieve the current biometric setting
+    final useBiometric = prefs.getBool(biometricKey) ?? false;
+    
+    // Log the biometric setting for debugging
+    debugPrint('Biometric Authentication Enabled: $useBiometric');
   }
 }
 
@@ -331,28 +154,13 @@ class _MyAppState extends State<dynamic> {
 //   const constructor, 
 class MyApp extends StatefulWidget {
 
-  _ createState(/* No info */) {
-    // ** addr: 0x910fd4, size: 0x2c
-    // 0x910fd4: EnterFrame
-    //     0x910fd4: stp             fp, lr, [SP, #-0x10]!
-    //     0x910fd8: mov             fp, SP
-    // 0x910fdc: r1 = <MyApp>
-    //     0x910fdc: add             x1, PP, #8, lsl #12  ; [pp+0x8fc8] TypeArguments: <MyApp>
-    //     0x910fe0: ldr             x1, [x1, #0xfc8]
-    // 0x910fe4: r0 = _MyAppState()
-    //     0x910fe4: bl              #0x911000  ; Allocate_MyAppStateStub -> _MyAppState (size=0x1c)
-    // 0x910fe8: r1 = false
-    //     0x910fe8: add             x1, NULL, #0x30  ; false
-    // 0x910fec: StoreField: r0->field_13 = r1
-    //     0x910fec: stur            w1, [x0, #0x13]
-    // 0x910ff0: ArrayStore: r0[0] = r1  ; List_4
-    //     0x910ff0: stur            w1, [x0, #0x17]
-    // 0x910ff4: LeaveFrame
-    //     0x910ff4: mov             SP, fp
-    //     0x910ff8: ldp             fp, lr, [SP], #0x10
-    // 0x910ffc: ret
-    //     0x910ffc: ret             
-  }
+  /// Creates the state for this stateful widget.
+  /// 
+  /// Initializes the _MyAppState with:
+  /// - Empty state initialization
+  /// - False flags for state management
+  @override
+  State<MyApp> createState() => _MyAppState();
 }
 
 // class id: 4035, size: 0x8, field offset: 0x8

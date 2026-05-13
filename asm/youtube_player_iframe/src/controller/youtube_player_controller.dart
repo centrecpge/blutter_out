@@ -8,155 +8,37 @@ class :: {
 //   const constructor, 
 class YoutubeVideoState extends Object {
 
-  factory _ YoutubeVideoState.fromJson(/* No info */) {
-    // ** addr: 0x76e8bc, size: 0x1ac
-    // 0x76e8bc: EnterFrame
-    //     0x76e8bc: stp             fp, lr, [SP, #-0x10]!
-    //     0x76e8c0: mov             fp, SP
-    // 0x76e8c4: AllocStack(0x20)
-    //     0x76e8c4: sub             SP, SP, #0x20
-    // 0x76e8c8: CheckStackOverflow
-    //     0x76e8c8: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x76e8cc: cmp             SP, x16
-    //     0x76e8d0: b.ls            #0x76ea60
-    // 0x76e8d4: ldr             x16, [fp, #0x10]
-    // 0x76e8d8: str             x16, [SP]
-    // 0x76e8dc: r0 = jsonDecode()
-    //     0x76e8dc: bl              #0x6d5e90  ; [dart:convert] ::jsonDecode
-    // 0x76e8e0: stur            x0, [fp, #-8]
-    // 0x76e8e4: r16 = "currentTime"
-    //     0x76e8e4: add             x16, PP, #0x1a, lsl #12  ; [pp+0x1ab98] "currentTime"
-    //     0x76e8e8: ldr             x16, [x16, #0xb98]
-    // 0x76e8ec: stp             x16, x0, [SP]
-    // 0x76e8f0: r4 = 0
-    //     0x76e8f0: mov             x4, #0
-    // 0x76e8f4: ldr             x0, [SP, #8]
-    // 0x76e8f8: r16 = UnlinkedCall_0x433bfc
-    //     0x76e8f8: add             x16, PP, #0x1a, lsl #12  ; [pp+0x1aba0] UnlinkedCall: 0x433bfc - SwitchableCallMissStub
-    //     0x76e8fc: add             x16, x16, #0xba0
-    // 0x76e900: ldp             x5, lr, [x16]
-    // 0x76e904: blr             lr
-    // 0x76e908: mov             x3, x0
-    // 0x76e90c: r2 = Null
-    //     0x76e90c: mov             x2, NULL
-    // 0x76e910: r1 = Null
-    //     0x76e910: mov             x1, NULL
-    // 0x76e914: stur            x3, [fp, #-0x10]
-    // 0x76e918: branchIfSmi(r0, 0x76e944)
-    //     0x76e918: tbz             w0, #0, #0x76e944
-    // 0x76e91c: r4 = LoadClassIdInstr(r0)
-    //     0x76e91c: ldur            x4, [x0, #-1]
-    //     0x76e920: ubfx            x4, x4, #0xc, #0x14
-    // 0x76e924: sub             x4, x4, #0x3b
-    // 0x76e928: cmp             x4, #2
-    // 0x76e92c: b.ls            #0x76e944
-    // 0x76e930: r8 = num?
-    //     0x76e930: add             x8, PP, #8, lsl #12  ; [pp+0x8a20] Type: num?
-    //     0x76e934: ldr             x8, [x8, #0xa20]
-    // 0x76e938: r3 = Null
-    //     0x76e938: add             x3, PP, #0x1a, lsl #12  ; [pp+0x1abb0] Null
-    //     0x76e93c: ldr             x3, [x3, #0xbb0]
-    // 0x76e940: r0 = DefaultNullableTypeTest()
-    //     0x76e940: bl              #0xb96e74  ; DefaultNullableTypeTestStub
-    // 0x76e944: ldur            x0, [fp, #-0x10]
-    // 0x76e948: cmp             w0, NULL
-    // 0x76e94c: b.ne            #0x76e954
-    // 0x76e950: r0 = 0
-    //     0x76e950: mov             x0, #0
-    // 0x76e954: stur            x0, [fp, #-0x10]
-    // 0x76e958: ldur            x16, [fp, #-8]
-    // 0x76e95c: r30 = "loadedFraction"
-    //     0x76e95c: add             lr, PP, #0x1a, lsl #12  ; [pp+0x1abc0] "loadedFraction"
-    //     0x76e960: ldr             lr, [lr, #0xbc0]
-    // 0x76e964: stp             lr, x16, [SP]
-    // 0x76e968: r4 = 0
-    //     0x76e968: mov             x4, #0
-    // 0x76e96c: ldr             x0, [SP, #8]
-    // 0x76e970: r16 = UnlinkedCall_0x433bfc
-    //     0x76e970: add             x16, PP, #0x1a, lsl #12  ; [pp+0x1abc8] UnlinkedCall: 0x433bfc - SwitchableCallMissStub
-    //     0x76e974: add             x16, x16, #0xbc8
-    // 0x76e978: ldp             x5, lr, [x16]
-    // 0x76e97c: blr             lr
-    // 0x76e980: mov             x3, x0
-    // 0x76e984: r2 = Null
-    //     0x76e984: mov             x2, NULL
-    // 0x76e988: r1 = Null
-    //     0x76e988: mov             x1, NULL
-    // 0x76e98c: stur            x3, [fp, #-8]
-    // 0x76e990: branchIfSmi(r0, 0x76e9bc)
-    //     0x76e990: tbz             w0, #0, #0x76e9bc
-    // 0x76e994: r4 = LoadClassIdInstr(r0)
-    //     0x76e994: ldur            x4, [x0, #-1]
-    //     0x76e998: ubfx            x4, x4, #0xc, #0x14
-    // 0x76e99c: sub             x4, x4, #0x3b
-    // 0x76e9a0: cmp             x4, #2
-    // 0x76e9a4: b.ls            #0x76e9bc
-    // 0x76e9a8: r8 = num?
-    //     0x76e9a8: add             x8, PP, #8, lsl #12  ; [pp+0x8a20] Type: num?
-    //     0x76e9ac: ldr             x8, [x8, #0xa20]
-    // 0x76e9b0: r3 = Null
-    //     0x76e9b0: add             x3, PP, #0x1a, lsl #12  ; [pp+0x1abd8] Null
-    //     0x76e9b4: ldr             x3, [x3, #0xbd8]
-    // 0x76e9b8: r0 = DefaultNullableTypeTest()
-    //     0x76e9b8: bl              #0xb96e74  ; DefaultNullableTypeTestStub
-    // 0x76e9bc: ldur            x0, [fp, #-8]
-    // 0x76e9c0: cmp             w0, NULL
-    // 0x76e9c4: b.ne            #0x76e9d0
-    // 0x76e9c8: r1 = 0
-    //     0x76e9c8: mov             x1, #0
-    // 0x76e9cc: b               #0x76e9d4
-    // 0x76e9d0: mov             x1, x0
-    // 0x76e9d4: ldur            x0, [fp, #-0x10]
-    // 0x76e9d8: stur            x1, [fp, #-8]
-    // 0x76e9dc: r2 = 59
-    //     0x76e9dc: mov             x2, #0x3b
-    // 0x76e9e0: branchIfSmi(r0, 0x76e9ec)
-    //     0x76e9e0: tbz             w0, #0, #0x76e9ec
-    // 0x76e9e4: r2 = LoadClassIdInstr(r0)
-    //     0x76e9e4: ldur            x2, [x0, #-1]
-    //     0x76e9e8: ubfx            x2, x2, #0xc, #0x14
-    // 0x76e9ec: r16 = 2000
-    //     0x76e9ec: mov             x16, #0x7d0
-    // 0x76e9f0: stp             x16, x0, [SP]
-    // 0x76e9f4: mov             x0, x2
-    // 0x76e9f8: r0 = GDT[cid_x0 + -0xffd]()
-    //     0x76e9f8: sub             lr, x0, #0xffd
-    //     0x76e9fc: ldr             lr, [x21, lr, lsl #3]
-    //     0x76ea00: blr             lr
-    // 0x76ea04: r1 = 59
-    //     0x76ea04: mov             x1, #0x3b
-    // 0x76ea08: branchIfSmi(r0, 0x76ea14)
-    //     0x76ea08: tbz             w0, #0, #0x76ea14
-    // 0x76ea0c: r1 = LoadClassIdInstr(r0)
-    //     0x76ea0c: ldur            x1, [x0, #-1]
-    //     0x76ea10: ubfx            x1, x1, #0xc, #0x14
-    // 0x76ea14: str             x0, [SP]
-    // 0x76ea18: mov             x0, x1
-    // 0x76ea1c: r0 = GDT[cid_x0 + -0xe75]()
-    //     0x76ea1c: sub             lr, x0, #0xe75
-    //     0x76ea20: ldr             lr, [x21, lr, lsl #3]
-    //     0x76ea24: blr             lr
-    // 0x76ea28: ldur            x0, [fp, #-8]
-    // 0x76ea2c: r1 = 59
-    //     0x76ea2c: mov             x1, #0x3b
-    // 0x76ea30: branchIfSmi(r0, 0x76ea3c)
-    //     0x76ea30: tbz             w0, #0, #0x76ea3c
-    // 0x76ea34: r1 = LoadClassIdInstr(r0)
-    //     0x76ea34: ldur            x1, [x0, #-1]
-    //     0x76ea38: ubfx            x1, x1, #0xc, #0x14
-    // 0x76ea3c: str             x0, [SP]
-    // 0x76ea40: mov             x0, x1
-    // 0x76ea44: r0 = GDT[cid_x0 + -0x1000]()
-    //     0x76ea44: sub             lr, x0, #1, lsl #12
-    //     0x76ea48: ldr             lr, [x21, lr, lsl #3]
-    //     0x76ea4c: blr             lr
-    // 0x76ea50: r0 = YoutubeVideoState()
-    //     0x76ea50: bl              #0x76ea88  ; AllocateYoutubeVideoStateStub -> YoutubeVideoState (size=0x8)
-    // 0x76ea54: LeaveFrame
-    //     0x76ea54: mov             SP, fp
-    //     0x76ea58: ldp             fp, lr, [SP], #0x10
-    // 0x76ea5c: ret
-    //     0x76ea5c: ret             
+  /// Factory constructor to create YoutubeVideoState from JSON data.
+  /// 
+  /// Deserializes video player state including:
+  /// - currentTime: The current playback position (optional, num?)
+  /// - loadedFraction: The fraction of video loaded (optional, num?)
+  /// - Duration and other metadata parameters with type validation
+  /// 
+  /// Type validation ensures safe conversion from dynamic JSON to typed values.
+  factory YoutubeVideoState.fromJson(Map<String, dynamic> json) {
+    // Decode JSON string if passed as string
+    final data = json is String ? jsonDecode(json) as Map<String, dynamic> : json;
+    
+    // Extract currentTime with safe type conversion to num?
+    final currentTimeValue = data['currentTime'];
+    final currentTime = currentTimeValue is num? ? currentTimeValue : null;
+    
+    // Extract loadedFraction with safe type conversion to num?
+    final loadedFractionValue = data['loadedFraction'];
+    final loadedFraction = loadedFractionValue is num? ? loadedFractionValue : null;
+    
+    // Extract duration (default 2000ms if not provided)
+    final durationValue = data['duration'];
+    final duration = durationValue is int ? durationValue : 2000;
+    
+    // Create and return the YoutubeVideoState instance
+    return YoutubeVideoState(
+      currentTime: currentTime,
+      loadedFraction: loadedFraction,
+      duration: duration,
+    );
+  }             
     // 0x76ea60: r0 = StackOverflowSharedWithoutFPURegs()
     //     0x76ea60: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
     // 0x76ea64: b               #0x76e8d4

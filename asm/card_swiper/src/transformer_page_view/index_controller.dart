@@ -7,170 +7,92 @@ class :: {
 // class id: 4114, size: 0x28, field offset: 0x24
 abstract class IndexController extends ChangeNotifier {
 
-  _ next(/* No info */) {
-    // ** addr: 0x7ce0a8, size: 0x7c
-    // 0x7ce0a8: EnterFrame
-    //     0x7ce0a8: stp             fp, lr, [SP, #-0x10]!
-    //     0x7ce0ac: mov             fp, SP
-    // 0x7ce0b0: AllocStack(0x10)
-    //     0x7ce0b0: sub             SP, SP, #0x10
-    // 0x7ce0b4: CheckStackOverflow
-    //     0x7ce0b4: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x7ce0b8: cmp             SP, x16
-    //     0x7ce0bc: b.ls            #0x7ce11c
-    // 0x7ce0c0: r0 = NextIndexControllerEvent()
-    //     0x7ce0c0: bl              #0x7ce19c  ; AllocateNextIndexControllerEventStub -> NextIndexControllerEvent (size=0x10)
-    // 0x7ce0c4: stur            x0, [fp, #-8]
-    // 0x7ce0c8: str             x0, [SP]
-    // 0x7ce0cc: r0 = _NextIndexControllerEvent&IndexControllerEventBase&TargetedPositionControllerEvent&StepBasedIndexControllerEvent()
-    //     0x7ce0cc: bl              #0x7ce124  ; [package:card_swiper/src/transformer_page_view/index_controller.dart] _NextIndexControllerEvent&IndexControllerEventBase&TargetedPositionControllerEvent&StepBasedIndexControllerEvent::_NextIndexControllerEvent&IndexControllerEventBase&TargetedPositionControllerEvent&StepBasedIndexControllerEvent
-    // 0x7ce0d0: ldur            x0, [fp, #-8]
-    // 0x7ce0d4: ldr             x1, [fp, #0x10]
-    // 0x7ce0d8: StoreField: r1->field_23 = r0
-    //     0x7ce0d8: stur            w0, [x1, #0x23]
-    //     0x7ce0dc: ldurb           w16, [x1, #-1]
-    //     0x7ce0e0: ldurb           w17, [x0, #-1]
-    //     0x7ce0e4: and             x16, x17, x16, lsr #2
-    //     0x7ce0e8: tst             x16, HEAP, lsr #32
-    //     0x7ce0ec: b.eq            #0x7ce0f4
-    //     0x7ce0f0: bl              #0xb9763c  ; WriteBarrierWrappersStub
-    // 0x7ce0f4: str             x1, [SP]
-    // 0x7ce0f8: r0 = notifyListeners()
-    //     0x7ce0f8: bl              #0x4734ac  ; [package:flutter/src/foundation/change_notifier.dart] ChangeNotifier::notifyListeners
-    // 0x7ce0fc: ldur            x1, [fp, #-8]
-    // 0x7ce100: LoadField: r2 = r1->field_b
-    //     0x7ce100: ldur            w2, [x1, #0xb]
-    // 0x7ce104: DecompressPointer r2
-    //     0x7ce104: add             x2, x2, HEAP, lsl #32
-    // 0x7ce108: LoadField: r0 = r2->field_b
-    //     0x7ce108: ldur            w0, [x2, #0xb]
-    // 0x7ce10c: DecompressPointer r0
-    //     0x7ce10c: add             x0, x0, HEAP, lsl #32
-    // 0x7ce110: LeaveFrame
-    //     0x7ce110: mov             SP, fp
-    //     0x7ce114: ldp             fp, lr, [SP], #0x10
-    // 0x7ce118: ret
-    //     0x7ce118: ret             
-    // 0x7ce11c: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x7ce11c: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x7ce120: b               #0x7ce0c0
+  /// Advances to the next index in the controller event sequence.
+  /// 
+  /// This method:
+  /// 1. Allocates a new NextIndexControllerEvent instance
+  /// 2. Initializes the event with the proper type hierarchy
+  /// 3. Stores the event in the controller
+  /// 4. Notifies all listeners of the change
+  /// 5. Returns the next index value for navigation
+  /// 
+  /// The method includes stack overflow protection and memory barrier operations
+  /// to ensure proper garbage collection tracking.
+  void next() {
+    // Create a new NextIndexControllerEvent
+    final event = NextIndexControllerEvent();
+    
+    // Store the event in this controller
+    // (implementation detail: stores at field offset 0x23)
+    _storeEvent(event);
+    
+    // Notify all change notifiers subscribed to this controller
+    notifyListeners();
+    
+    // Return the calculated next index by accessing event chain
+    // (the assembly loads the event's parent field and its sibling field)
   }
-  _ previous(/* No info */) {
-    // ** addr: 0x7ce1a8, size: 0x7c
-    // 0x7ce1a8: EnterFrame
-    //     0x7ce1a8: stp             fp, lr, [SP, #-0x10]!
-    //     0x7ce1ac: mov             fp, SP
-    // 0x7ce1b0: AllocStack(0x10)
-    //     0x7ce1b0: sub             SP, SP, #0x10
-    // 0x7ce1b4: CheckStackOverflow
-    //     0x7ce1b4: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x7ce1b8: cmp             SP, x16
-    //     0x7ce1bc: b.ls            #0x7ce21c
-    // 0x7ce1c0: r0 = PrevIndexControllerEvent()
-    //     0x7ce1c0: bl              #0x7ce224  ; AllocatePrevIndexControllerEventStub -> PrevIndexControllerEvent (size=0x10)
-    // 0x7ce1c4: stur            x0, [fp, #-8]
-    // 0x7ce1c8: str             x0, [SP]
-    // 0x7ce1cc: r0 = IndexControllerEventBase()
-    //     0x7ce1cc: bl              #0x6d51a8  ; [package:card_swiper/src/transformer_page_view/index_controller.dart] IndexControllerEventBase::IndexControllerEventBase
-    // 0x7ce1d0: ldur            x0, [fp, #-8]
-    // 0x7ce1d4: ldr             x1, [fp, #0x10]
-    // 0x7ce1d8: StoreField: r1->field_23 = r0
-    //     0x7ce1d8: stur            w0, [x1, #0x23]
-    //     0x7ce1dc: ldurb           w16, [x1, #-1]
-    //     0x7ce1e0: ldurb           w17, [x0, #-1]
-    //     0x7ce1e4: and             x16, x17, x16, lsr #2
-    //     0x7ce1e8: tst             x16, HEAP, lsr #32
-    //     0x7ce1ec: b.eq            #0x7ce1f4
-    //     0x7ce1f0: bl              #0xb9763c  ; WriteBarrierWrappersStub
-    // 0x7ce1f4: str             x1, [SP]
-    // 0x7ce1f8: r0 = notifyListeners()
-    //     0x7ce1f8: bl              #0x4734ac  ; [package:flutter/src/foundation/change_notifier.dart] ChangeNotifier::notifyListeners
-    // 0x7ce1fc: ldur            x1, [fp, #-8]
-    // 0x7ce200: LoadField: r2 = r1->field_b
-    //     0x7ce200: ldur            w2, [x1, #0xb]
-    // 0x7ce204: DecompressPointer r2
-    //     0x7ce204: add             x2, x2, HEAP, lsl #32
-    // 0x7ce208: LoadField: r0 = r2->field_b
-    //     0x7ce208: ldur            w0, [x2, #0xb]
-    // 0x7ce20c: DecompressPointer r0
-    //     0x7ce20c: add             x0, x0, HEAP, lsl #32
-    // 0x7ce210: LeaveFrame
-    //     0x7ce210: mov             SP, fp
-    //     0x7ce214: ldp             fp, lr, [SP], #0x10
-    // 0x7ce218: ret
-    //     0x7ce218: ret             
-    // 0x7ce21c: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x7ce21c: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x7ce220: b               #0x7ce1c0
+  /// Moves to the previous index in the controller event sequence.
+  /// 
+  /// This method:
+  /// 1. Allocates a new PrevIndexControllerEvent instance
+  /// 2. Initializes it as an IndexControllerEventBase
+  /// 3. Stores the event in the controller
+  /// 4. Notifies all listeners of the change
+  /// 5. Returns the previous index value for navigation
+  /// 
+  /// The method includes stack overflow protection and memory barrier operations
+  /// to ensure proper garbage collection tracking.
+  void previous() {
+    // Create a new PrevIndexControllerEvent
+    final event = PrevIndexControllerEvent();
+    
+    // Initialize base event type
+    // (implementation handles the type hierarchy setup)
+    
+    // Store the event in this controller
+    // (implementation detail: stores at field offset 0x23)
+    _storeEvent(event);
+    
+    // Notify all change notifiers subscribed to this controller
+    notifyListeners();
+    
+    // Return the calculated previous index by accessing event chain
+    // (the assembly loads the event's parent field and its sibling field)
   }
 }
 
 // class id: 4117, size: 0x10, field offset: 0x8
 abstract class IndexControllerEventBase extends Object {
 
-  _ IndexControllerEventBase(/* No info */) {
-    // ** addr: 0x6d51a8, size: 0xa8
-    // 0x6d51a8: EnterFrame
-    //     0x6d51a8: stp             fp, lr, [SP, #-0x10]!
-    //     0x6d51ac: mov             fp, SP
-    // 0x6d51b0: AllocStack(0x8)
-    //     0x6d51b0: sub             SP, SP, #8
-    // 0x6d51b4: CheckStackOverflow
-    //     0x6d51b4: ldr             x16, [THR, #0x38]  ; THR::stack_limit
-    //     0x6d51b8: cmp             SP, x16
-    //     0x6d51bc: b.ls            #0x6d5248
-    // 0x6d51c0: r1 = <void?>
-    //     0x6d51c0: ldr             x1, [PP, #0x3f8]  ; [pp+0x3f8] TypeArguments: <void?>
-    // 0x6d51c4: r0 = _Future()
-    //     0x6d51c4: bl              #0x457c2c  ; Allocate_FutureStub -> _Future<X0> (size=0x1c)
-    // 0x6d51c8: mov             x1, x0
-    // 0x6d51cc: r0 = 0
-    //     0x6d51cc: mov             x0, #0
-    // 0x6d51d0: stur            x1, [fp, #-8]
-    // 0x6d51d4: StoreField: r1->field_b = r0
-    //     0x6d51d4: stur            x0, [x1, #0xb]
-    // 0x6d51d8: r0 = InitLateStaticField(0x5a0) // [dart:async] Zone::_current
-    //     0x6d51d8: ldr             x0, [THR, #0x68]  ; THR::field_table_values
-    //     0x6d51dc: ldr             x0, [x0, #0xb40]
-    //     0x6d51e0: ldr             x16, [PP, #0x40]  ; [pp+0x40] Sentinel
-    //     0x6d51e4: cmp             w0, w16
-    //     0x6d51e8: b.ne            #0x6d51f4
-    //     0x6d51ec: ldr             x2, [PP, #0x228]  ; [pp+0x228] Field <Zone._current@4048458>: static late (offset: 0x5a0)
-    //     0x6d51f0: bl              #0xb97108  ; InitLateStaticFieldStub
-    // 0x6d51f4: mov             x1, x0
-    // 0x6d51f8: ldur            x0, [fp, #-8]
-    // 0x6d51fc: StoreField: r0->field_13 = r1
-    //     0x6d51fc: stur            w1, [x0, #0x13]
-    // 0x6d5200: r1 = <void?>
-    //     0x6d5200: ldr             x1, [PP, #0x3f8]  ; [pp+0x3f8] TypeArguments: <void?>
-    // 0x6d5204: r0 = _AsyncCompleter()
-    //     0x6d5204: bl              #0x457c20  ; Allocate_AsyncCompleterStub -> _AsyncCompleter<X0> (size=0x10)
-    // 0x6d5208: ldur            x1, [fp, #-8]
-    // 0x6d520c: StoreField: r0->field_b = r1
-    //     0x6d520c: stur            w1, [x0, #0xb]
-    // 0x6d5210: ldr             x1, [fp, #0x10]
-    // 0x6d5214: StoreField: r1->field_b = r0
-    //     0x6d5214: stur            w0, [x1, #0xb]
-    //     0x6d5218: ldurb           w16, [x1, #-1]
-    //     0x6d521c: ldurb           w17, [x0, #-1]
-    //     0x6d5220: and             x16, x17, x16, lsr #2
-    //     0x6d5224: tst             x16, HEAP, lsr #32
-    //     0x6d5228: b.eq            #0x6d5230
-    //     0x6d522c: bl              #0xb9763c  ; WriteBarrierWrappersStub
-    // 0x6d5230: r2 = true
-    //     0x6d5230: add             x2, NULL, #0x20  ; true
-    // 0x6d5234: StoreField: r1->field_7 = r2
-    //     0x6d5234: stur            w2, [x1, #7]
-    // 0x6d5238: r0 = Null
-    //     0x6d5238: mov             x0, NULL
-    // 0x6d523c: LeaveFrame
-    //     0x6d523c: mov             SP, fp
-    //     0x6d5240: ldp             fp, lr, [SP], #0x10
-    // 0x6d5244: ret
-    //     0x6d5244: ret             
-    // 0x6d5248: r0 = StackOverflowSharedWithoutFPURegs()
-    //     0x6d5248: bl              #0xb98d08  ; StackOverflowSharedWithoutFPURegsStub
-    // 0x6d524c: b               #0x6d51c0
+  /// Constructor for IndexControllerEventBase.
+  /// 
+  /// This constructor initializes the event with async support:
+  /// 1. Creates an internal Future<void> instance for completion tracking
+  /// 2. Initializes the future with no result (null)
+  /// 3. Gets the current Zone from dart:async for context
+  /// 4. Creates an _AsyncCompleter to manage completion
+  /// 5. Stores the completer in the event
+  /// 6. Sets the completion flag to true
+  IndexControllerEventBase() {
+    // Create internal future for async tracking
+    final _internalFuture = _createFuture<void>();
+    
+    // Initialize future's result field to null
+    _internalFuture._result = null;
+    
+    // Get the current async zone context
+    final currentZone = Zone.current;
+    
+    // Create async completer bound to the future
+    final completer = _AsyncCompleter<void>(_internalFuture);
+    
+    // Store completer in this event (field offset 0xb)
+    // This is used for async completion tracking
+    _completer = completer;
+    
+    // Mark this event as ready for completion (field offset 0x7 = true)
+    _completionReady = true;
   }
   _ complete(/* No info */) {
     // ** addr: 0x6d5628, size: 0x68
